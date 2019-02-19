@@ -78,4 +78,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+                if (fragment instanceof FragmentHome) {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                }
+                if (fragment instanceof FragmentSearch) {
+                    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                }
+                if (fragment instanceof FragmentProfile) {
+                    bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                }
+            }
+        });
+        super.onBackPressed();
+    }
 }
