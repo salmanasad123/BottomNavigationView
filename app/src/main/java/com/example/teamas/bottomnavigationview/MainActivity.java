@@ -24,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new FragmentHome());
-        fragmentTransaction.commit();
 
+        fragmentTransaction.add(R.id.fragment_container, new FragmentHome(), FragmentHome.class.getName());
+        fragmentTransaction.addToBackStack(FragmentHome.class.getName());
+        fragmentTransaction.commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -35,20 +36,44 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
-                        selectedFragment = new FragmentHome();
+                        selectedFragment = fragmentManager.findFragmentByTag(FragmentHome.class.getName());
+                        if (selectedFragment == null) {
+                            selectedFragment = new FragmentHome();
+                            fragmentTransaction.add(R.id.fragment_container, selectedFragment, FragmentHome.class.getName());
+                            fragmentTransaction.addToBackStack(FragmentHome.class.getName());
+                            fragmentTransaction.commit();
+                        } else {
+                            fragmentManager.popBackStack(FragmentHome.class.getName(), 0);
+                        }
+
                         break;
 
                     case R.id.nav_search:
-                        selectedFragment = new FragmentSearch();
+                        selectedFragment = fragmentManager.findFragmentByTag(FragmentSearch.class.getName());
+                        if (selectedFragment == null) {
+                            selectedFragment = new FragmentSearch();
+                            fragmentTransaction.add(R.id.fragment_container, selectedFragment, FragmentSearch.class.getName());
+                            fragmentTransaction.addToBackStack(FragmentSearch.class.getName());
+                            fragmentTransaction.commit();
+                        } else {
+                            fragmentManager.popBackStack(FragmentSearch.class.getName(), 0);
+                        }
                         break;
 
                     case R.id.nav_profile:
-                        selectedFragment = new FragmentProfile();
+                        selectedFragment = fragmentManager.findFragmentByTag(FragmentProfile.class.getName());
+                        if (selectedFragment == null) {
+                            selectedFragment = new FragmentProfile();
+                            fragmentTransaction.add(R.id.fragment_container, selectedFragment, FragmentProfile.class.getName());
+                            fragmentTransaction.addToBackStack(FragmentProfile.class.getName());
+                            fragmentTransaction.commit();
+                        } else {
+                            fragmentManager.popBackStack(FragmentProfile.class.getName(), 0);
+                        }
                         break;
+
                 }
 
-                fragmentTransaction.replace(R.id.fragment_container, selectedFragment);
-                fragmentTransaction.commit();
                 return true;
             }
         });
