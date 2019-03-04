@@ -94,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
                 if (fragment instanceof FragmentProfile) {
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                 }
+
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    fragmentManager.executePendingTransactions();
+                    MainActivity.super.onBackPressed();
+                }
             }
         });
         super.onBackPressed();
